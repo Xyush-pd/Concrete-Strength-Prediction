@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concrete Strength AI Predictor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2A2A72;
+            --secondary: #009FFD;
+            --accent: #FF0076;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem 0;
+            overflow: hidden;
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+            transform: translateY(0);
+            animation: float 4s ease-in-out infinite;
+            margin: 2rem 0; 
+            max-height: 90vh; 
+            overflow-y: auto;
+        }
+
+        /* Add scrollbar styling */
+        .container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .container::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+
+        .container::-webkit-scrollbar-thumb {
+            background: var(--secondary);
+            border-radius: 4px;
+        }
+
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.8rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px rgba(0, 159, 253, 0.2);
+        }
+
+        label {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus + label, input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            background: white;
+            padding: 0 0.3rem;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.8rem;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -50%; }
+            100% { left: 150%; }
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 0.8rem;
+            font-size: 1.2rem;
+            text-align: center;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding:1rem 0;
+                align-items:flex-start;
+            }
+            .container {
+                max-height: 95vh;
+                margin: 1rem 0;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Concrete Strength AI Predictor</h2>
+        <form action="/predict" method="POST">
+            <div class="form-group">
+                <input type="number" name="Cement" placeholder=" " step="0.01" required>
+                <label>Cement (kg/m³)</label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="Slag" placeholder=" " step="0.01" required>
+                <label>Slag (kg/m³)</label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="Ash" placeholder=" " step="0.01" required>
+                <label> Ash(kg/m³)</label>
+            </div>
+            <div class="form-group">
+                <input type="=number" name="Water" placeholder=" " step="0.01" required>
+                <label>Water(kg/m³)</label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="Plast" placeholder=" " step="0.01" required>
+                <label>Plasticizer(kg/m³)</label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="Coarse" placeholder=" " step="0.01" required>
+                <label>Coarse Aggregrate(kg/m³)</label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="Fine" placeholder=" " step="0.01" required>
+                <label>Fine Aggregrate(kg/m³)</label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="Days" placeholder=" " step="0.01" required>
+                <label>Durations</label>
+            </div>
+            <div class="form-group">
+                <input type="number" name="WC" placeholder=" " step="0.01" required>
+                <label>Water/Cement ratio</label>
+            </div>
+            
+            <button type="submit" class="btn">Calculate Strength</button>
+        </form>
+
+        {% if prediction is not none %}
+            <div class="result">
+                <div style="font-size: 1.4rem; margin-bottom: 0.5rem;">🏗️ Predicted Strength</div>
+                <div style="font-size: 2rem; font-weight: 600;">{{ prediction }} MPa</div>
+                <div style="font-size: 0.9rem; opacity: 0.9; margin-top: 0.5rem;">Optimal construction grade</div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Add floating particles animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const particles = document.createElement('div');
+            particles.className = 'particles';
+            document.body.appendChild(particles);
+
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    background: rgba(255,255,255,0.3);
+                    border-radius: 50%;
+                    animation: float ${5 + Math.random() * 5}s infinite;
+                `;
+                particle.style.width = particle.style.height = `${Math.random() * 5 + 2}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particles.appendChild(particle);
+            }
+        });
+    </script>
+</body>
+</html>
