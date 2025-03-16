@@ -36,7 +36,7 @@ This project focuses on predicting the compressive strength of concrete using ma
 
 ### Cement Content vs Strength Correlation
 ![Strength vs Cement](images/strength_vs_cement.png)
-- A positive correlation (R² = 0.248) exists, but strength is influenced by multiple factors.
+- A weak positive correlation exist, as strength is influenced by multiple factors, as indicated by low (R² = 0.248) value, showing the non-linear nature.
 
 ## Model Enhancement
 - **Validation with New Data**: Model performance was assessed using fresh test samples.
